@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const reportRoutes = require('./routes/reportRoutes');
+const sustainabilityRoutes = require('./routes/sustainabilityRoutes');
 
 // Initialize app
 const app = express();
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/sustainability', sustainabilityRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

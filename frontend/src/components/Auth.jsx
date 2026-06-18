@@ -56,31 +56,51 @@ export default function Auth() {
   };
 
   const mockGoogleAccounts = [
-    { name: 'Aarav Sharma', email: 'aarav@ecospend.ai', avatar: 'AS', desc: 'Active Chrome Profile' },
-    { name: 'Priya Patel', email: 'priya@ecospend.ai', avatar: 'PP', desc: 'Syncing to this device' },
-    { name: 'Alex Rivera', email: 'alex.rivera@gmail.com', avatar: 'AR', desc: 'Personal account' },
-    { name: 'Sarah Chen', email: 'sarah.chen@gmail.com', avatar: 'SC', desc: 'Work account' }
+    { name: 'Abhilasya Kothapalli', email: 'abhilasya.kothapalli@gmail.com', avatar: 'AK', desc: 'Active Chrome Profile' },
+    { name: 'Aarav Sharma', email: 'aarav@ecospend.ai', avatar: 'AS', desc: 'Syncing to this device' },
+    { name: 'Sarah Chen', email: 'sarah.chen@gmail.com', avatar: 'SC', desc: 'Personal account' }
   ];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-emerald-50 dark:bg-slate-950 p-4 transition-colors duration-300">
+    <div className="min-h-screen flex items-center justify-center bg-emerald-50/70 dark:bg-slate-950/90 p-4 transition-colors duration-300 relative overflow-hidden">
+      {/* BACKGROUND MOTION PICTURE (Nature/Forest video) */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-25 dark:opacity-15 pointer-events-none z-0"
+      >
+        <source
+          src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f3c05cba3d767d1c935d54b4c7ad3b3908&profile_id=139&oauth2_token_id=57447761"
+          type="video/mp4"
+        />
+      </video>
+
       <div className="w-full max-w-md relative z-10">
         
         {/* Brand logo header */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-6">
           <div className="bg-emerald-500 text-white p-3 rounded-2xl shadow-lg shadow-emerald-500/20 mb-3 animate-bounce">
             <Leaf className="w-8 h-8" />
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800 dark:text-emerald-400">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-800 dark:text-emerald-450">
             EcoSpend <span className="text-emerald-500 dark:text-emerald-300 font-light">AI</span>
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1 text-center">
-            Empowering your wallet and the planet through AI carbon insights
+          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-bold mt-1 text-center uppercase tracking-widest animate-pulse">
+            "Track Carbon, Change Habits, Protect Tomorrow."
           </p>
         </div>
 
         {/* Form panel with Glassmorphism */}
         <div className="glass-panel rounded-3xl shadow-xl p-8 backdrop-blur-md">
+          {/* Carbon Footprint Educational Description */}
+          <div className="mb-6 p-4 bg-emerald-500/5 dark:bg-emerald-950/20 border border-emerald-500/10 rounded-2xl text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+            <span className="font-extrabold text-emerald-600 dark:text-emerald-400 block mb-1">🌿 What is a Carbon Footprint?</span>
+            The total amount of greenhouse gases released by your daily activities, purchases, and lifestyle choices.
+            Understanding your footprint helps you make smarter decisions for a healthier planet. 🌱
+          </div>
+
           <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-6 text-center">
             {isLogin ? 'Welcome Back' : 'Create Eco Account'}
           </h2>
@@ -227,19 +247,19 @@ export default function Auth() {
           </div>
         )}
       </div>
-
-      {/* GOOGLE CHROME ACCOUNT CHOOSER MODAL */}
+      {/* CLERK GOOGLE ACCOUNT CHOOSER MODAL */}
       {showGoogleModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-md p-4">
           <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
             
-            {/* Chrome Chooser Header */}
+            {/* Clerk Chooser Header */}
             <div className="bg-slate-50 dark:bg-slate-950 px-6 py-5 border-b border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                  <path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                </svg>
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Chrome Profile Chooser</span>
+              <div className="flex items-center gap-2">
+                {/* Clerk Logo styling - purple */}
+                <div className="w-6 h-6 rounded bg-indigo-600 flex items-center justify-center text-white font-extrabold text-[10px] tracking-tighter shrink-0">
+                  clerk
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Google Login via Clerk</span>
               </div>
               <button 
                 onClick={() => {
@@ -251,9 +271,9 @@ export default function Auth() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-
+ 
             <div className="p-6">
-              {/* Google branding */}
+              {/* Google/Clerk branding */}
               <div className="flex flex-col items-center mb-6 text-center">
                 <svg className="w-9 h-9 mb-2.5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -261,10 +281,13 @@ export default function Auth() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Choose an account</h3>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Sign in with Google</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  to log in instantly with your active Chrome profile
+                  to continue to <strong className="text-emerald-500 font-bold">EcoSpend AI</strong>
                 </p>
+                <div className="mt-2.5 text-[10px] bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 px-2.5 py-0.5 rounded-full font-bold border border-indigo-100 dark:border-indigo-900 inline-flex items-center gap-1">
+                  <span>🔒</span> Secured by Clerk
+                </div>
               </div>
 
               {googleLoading ? (

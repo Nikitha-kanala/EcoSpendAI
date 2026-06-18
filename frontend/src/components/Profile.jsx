@@ -14,6 +14,41 @@ import {
 import confetti from 'canvas-confetti';
 import { CHALLENGES } from './Challenges';
 
+const PREDEFINED_AVATARS = [
+  {
+    name: 'Leaf Steward',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%2310b981"/><path d="M50 20 C65 20 75 35 70 55 C65 75 50 80 50 80 C50 80 35 75 30 55 C25 35 35 20 50 20 Z" fill="white"/><path d="M50 20 L50 80 M50 40 L65 30 M50 50 L35 40 M50 60 L60 52" stroke="%2310b981" stroke-width="2.5" stroke-linecap="round"/></svg>'
+  },
+  {
+    name: 'Earth Guardian',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%233b82f6"/><path d="M30 40 C35 30 45 35 45 45 C45 55 35 60 30 50 Z M65 55 C70 45 75 55 70 65 C65 75 55 75 60 65 Z" fill="%2310b981"/><path d="M20 55 Q35 40 50 50 T80 40" fill="none" stroke="%2310b981" stroke-width="8" stroke-linecap="round"/></svg>'
+  },
+  {
+    name: 'Solar Pioneer',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23f59e0b"/><circle cx="50" cy="50" r="20" fill="white"/><path d="M50 12 L50 22 M50 78 L50 88 M12 50 L22 50 M78 50 L88 50 M23 23 L30 30 M70 70 L77 77 M23 78 L30 71 M70 21 L77 28" stroke="white" stroke-width="4.5" stroke-linecap="round"/></svg>'
+  },
+  {
+    name: 'Wind Champion',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%2314b8a6"/><path d="M50 50 L50 85 M50 50 L30 35 M50 50 L70 35" stroke="white" stroke-width="5" stroke-linecap="round"/><circle cx="50" cy="50" r="7" fill="white"/></svg>'
+  },
+  {
+    name: 'Water Drops',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%236366f1"/><path d="M50 22 C50 22 65 42 65 55 C65 65 58 72 50 72 C42 72 35 65 35 55 C35 42 50 22 50 22 Z" fill="white"/></svg>'
+  },
+  {
+    name: 'Abhilasya Kothapalli',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%238b5cf6"/><text x="50" y="58" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" fill="white" text-anchor="middle">AK</text></svg>'
+  },
+  {
+    name: 'Aarav Sharma',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%2306b6d4"/><text x="50" y="58" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" fill="white" text-anchor="middle">AS</text></svg>'
+  },
+  {
+    name: 'Sarah Chen',
+    url: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23ec4899"/><text x="50" y="58" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" fill="white" text-anchor="middle">SC</text></svg>'
+  }
+];
+
 export default function Profile() {
   const { user, uploadPhoto } = useAuth();
   const [uploading, setUploading] = useState(false);
@@ -53,6 +88,25 @@ export default function Profile() {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  // Predefined Avatar Selector Action
+  const handleSelectPredefinedAvatar = async (avatarUrl) => {
+    setUploading(true);
+    setMsg(null);
+    try {
+      await uploadPhoto(avatarUrl);
+      setMsg({ type: 'success', text: 'Profile photo updated successfully!' });
+      confetti({
+        particleCount: 50,
+        spread: 40,
+        colors: ['#10b981', '#fbbf24']
+      });
+    } catch (err) {
+      setMsg({ type: 'error', text: 'Failed to update photo.' });
+    } finally {
+      setUploading(false);
+    }
   };
 
   // Certificate Download Action
@@ -156,6 +210,39 @@ export default function Profile() {
               <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-3">Cumulative Balance</span>
               <span className="text-3xl font-black text-slate-800 dark:text-emerald-400 mt-1">{user?.ecoPoints || 0}</span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Eco Points Accumulated</span>
+            </div>
+          </div>
+
+          {/* Predefined Avatars Gallery */}
+          <div className="glass-panel rounded-3xl p-6 shadow-sm">
+            <h4 className="font-extrabold text-sm uppercase tracking-wider text-slate-800 dark:text-white mb-2">
+              Select Profile Photo
+            </h4>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mb-4 leading-relaxed">
+              Choose from our premium carbon stewardship icons or custom Chrome profiles to update your avatar instantly:
+            </p>
+            <div className="grid grid-cols-4 gap-3">
+              {PREDEFINED_AVATARS.map((avatar) => (
+                <button
+                  key={avatar.name}
+                  onClick={() => handleSelectPredefinedAvatar(avatar.url)}
+                  disabled={uploading}
+                  className={`relative rounded-full overflow-hidden aspect-square border-2 transition-all hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center bg-slate-50 dark:bg-slate-950 ${
+                    user?.profilePhoto === avatar.url 
+                      ? 'border-emerald-500 ring-2 ring-emerald-500/20 scale-105' 
+                      : 'border-slate-200 dark:border-slate-800 hover:border-emerald-500/50'
+                  }`}
+                  title={avatar.name}
+                  type="button"
+                >
+                  <img src={avatar.url} alt={avatar.name} className="w-full h-full object-cover" />
+                  {user?.profilePhoto === avatar.url && (
+                    <div className="absolute inset-0 bg-emerald-500/10 flex items-center justify-center">
+                      <span className="text-[9px] bg-emerald-500 text-white rounded-full px-1.5 py-0.5 scale-75 font-bold uppercase">Active</span>
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
 

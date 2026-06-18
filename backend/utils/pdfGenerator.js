@@ -81,9 +81,9 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
       const base64Data = user.profilePhoto.replace(/^data:image\/\w+;base64,/, "");
       const imageBuffer = Buffer.from(base64Data, 'base64');
       
-      const photoX = doc.page.width - 120;
-      const photoY = 45;
-      const photoSize = 65;
+      const photoSize = 100;
+      const photoX = doc.page.width - 150;
+      const photoY = 35;
       
       doc.save();
       doc.circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2)
@@ -93,7 +93,7 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
       doc.restore();
       
       doc.strokeColor(certColor)
-         .lineWidth(2)
+         .lineWidth(2.5)
          .circle(photoX + photoSize / 2, photoY + photoSize / 2, photoSize / 2 + 1)
          .stroke();
     } catch (photoError) {
@@ -110,12 +110,12 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
   doc.fillColor(certColor)
      .font('Helvetica')
      .fontSize(16)
-     .text(certTitle, 0, 125, { align: 'center', characterSpacing: 1 });
+     .text(certTitle, 0, 125, { align: 'center' });
 
   doc.fillColor(charcoal)
      .font('Helvetica-Bold')
      .fontSize(10)
-     .text(certSub, 0, 145, { align: 'center', characterSpacing: 2 });
+     .text(certSub, 0, 145, { align: 'center' });
 
   doc.moveDown(1.5);
 
@@ -132,7 +132,7 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
      .fontSize(28)
      .text(user.name, { align: 'center' });
 
-  doc.moveDown(0.5);
+  doc.moveDown(0.8);
 
   doc.fillColor(charcoal)
      .font('Helvetica')
@@ -142,26 +142,31 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
        { align: 'center' }
      );
 
+  doc.moveDown(0.4);
+
   doc.text(
      `Through carbon-conscious spending patterns and resource optimization, this individual has mitigated`,
      { align: 'center' }
   );
 
   doc.moveDown(0.5);
+
   doc.fillColor(certColor)
      .font('Helvetica-Bold')
      .fontSize(18)
      .text(`${carbonSavings.toFixed(1)} kg of CO₂ emissions`, { align: 'center' });
 
+  doc.moveDown(0.4);
+
   doc.fillColor(charcoal)
      .font('Helvetica')
      .fontSize(13)
-     .text(`and saved a cumulative total of ₹${financialSavings} over the billing cycle.`, { align: 'center' });
+     .text(`and saved a cumulative total of Rs. ${financialSavings} over the billing cycle.`, { align: 'center' });
 
   doc.moveDown(2);
 
   // --- STATS ROW / CARDS ---
-  const startY = 320;
+  const startY = doc.y + 20;
   const cardWidth = 180;
   const cardHeight = 65;
   const cardSpacing = 40;
@@ -171,19 +176,21 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
     // Card background
     doc.roundedRect(x, startY, cardWidth, cardHeight, 6)
        .fillColor('#f8fafc')
-       .fillAndStroke('#e2e8f0');
+       .strokeColor('#e2e8f0')
+       .lineWidth(1)
+       .fillAndStroke();
 
     // Title
     doc.fillColor('#64748b')
        .font('Helvetica-Bold')
        .fontSize(10)
-       .text(title.toUpperCase(), x + 10, startY + 15, { width: cardWidth - 20, align: 'center' });
+       .text(title.toUpperCase(), x + 10, startY + 14, { width: cardWidth - 20, align: 'center' });
 
     // Value
     doc.fillColor(darkGreen)
        .font('Helvetica-Bold')
        .fontSize(18)
-       .text(`${value} ${unit}`, x + 10, startY + 32, { width: cardWidth - 20, align: 'center' });
+       .text(`${value} ${unit}`, x + 10, startY + 34, { width: cardWidth - 20, align: 'center' });
   };
 
   drawStatCard(startX, 'Carbon Offset', carbonSavings.toFixed(1), 'kg');
@@ -191,7 +198,7 @@ const generateCertificatePDF = (user, expenses, writeStream) => {
   drawStatCard(startX + (cardWidth + cardSpacing) * 2, 'Weekly Score', user.weeklyScore, '/100');
 
   // --- FOOTER & SIGNATURE ---
-  const footerY = 430;
+  const footerY = startY + cardHeight + 35;
 
   // Left Signature
   doc.strokeColor('#cbd5e1')

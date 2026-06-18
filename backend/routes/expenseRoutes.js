@@ -7,7 +7,8 @@ const {
   getExpenses,
   chatAdvisor,
   logManualBill,
-  getRedditBlogs
+  getRedditBlogs,
+  confirmExpense
 } = require('../controllers/expenseController');
 const { protect } = require('../middleware/auth');
 
@@ -29,6 +30,7 @@ router.use(protect);
 router.post('/upload', upload.single('receipt'), uploadReceipt);
 router.post('/quick-log', quickLogExpense);
 router.post('/manual', logManualBill);
+router.post('/confirm', confirmExpense);
 router.get('/reddit', getRedditBlogs);
 router.get('/', getExpenses);
 router.post('/chat', chatAdvisor);

@@ -17,7 +17,8 @@ import {
   Leaf,
   UserCircle,
   Award,
-  Newspaper
+  Newspaper,
+  HelpCircle
 } from 'lucide-react';
 
 export default function Sidebar({ activeView, setActiveView }) {
@@ -62,10 +63,13 @@ export default function Sidebar({ activeView, setActiveView }) {
         </button>
       </div>
 
-      {/* User Quick Info */}
+      {/* User Quick Info (Interactive Click to Profile) */}
       {user && (
-        <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full overflow-hidden mb-2 shadow-sm border border-emerald-500/10 flex items-center justify-center shrink-0">
+        <button 
+          onClick={() => setActiveView('profile')}
+          className="w-[calc(100%-1.5rem)] mx-3 my-2.5 p-3 border border-slate-100 hover:border-emerald-500/25 hover:bg-slate-50 dark:hover:bg-slate-850 dark:border-slate-800/60 rounded-2xl flex flex-col items-center transition-all duration-200 cursor-pointer shadow-sm group shrink-0"
+        >
+          <div className="w-12 h-12 rounded-full overflow-hidden mb-2 shadow-sm border border-emerald-500/10 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
             {user.profilePhoto ? (
               <img src={user.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
             ) : (
@@ -76,17 +80,17 @@ export default function Sidebar({ activeView, setActiveView }) {
           </div>
           {!isCollapsed && (
             <div className="text-center w-full">
-              <p className="font-semibold text-slate-800 dark:text-white truncate">{user.name}</p>
+              <p className="font-semibold text-slate-800 dark:text-white truncate group-hover:text-emerald-500 transition-colors duration-250">{user.name}</p>
               <div className="mt-1.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
                 🌱 {user.ecoPoints} Points
               </div>
             </div>
           )}
-        </div>
+        </button>
       )}
 
       {/* Navigation Menu Links */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-3 space-y-1 overflow-y-auto custom-scrollbar">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeView === item.id;
@@ -109,6 +113,15 @@ export default function Sidebar({ activeView, setActiveView }) {
 
       {/* Sidebar Footer Controls */}
       <div className="p-3 border-t border-slate-200 dark:border-slate-800 space-y-1.5">
+        {/* Logout Button (on top of Dark Mode) */}
+        <button
+          onClick={logout}
+          className="w-full flex items-center gap-3 px-3 py-3 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-xl font-medium text-sm transition-all duration-300 cursor-pointer"
+        >
+          <LogOut className="w-5 h-5 shrink-0" />
+          {!isCollapsed && <span>Sign Out</span>}
+        </button>
+
         {/* Theme Toggler */}
         <button
           onClick={toggleTheme}
@@ -125,15 +138,6 @@ export default function Sidebar({ activeView, setActiveView }) {
               {!isCollapsed && <span>Dark Mode</span>}
             </>
           )}
-        </button>
-
-        {/* Logout Button */}
-        <button
-          onClick={logout}
-          className="w-full flex items-center gap-3 px-3 py-3 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 rounded-xl font-medium text-sm transition-all duration-300 cursor-pointer"
-        >
-          <LogOut className="w-5 h-5 shrink-0" />
-          {!isCollapsed && <span>Sign Out</span>}
         </button>
       </div>
     </div>
